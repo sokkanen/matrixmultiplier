@@ -16,6 +16,11 @@ public class Multiplier {
         this.dimension = dimension;
     }
 
+    /**
+     * Runs the application and saves the result on disk.
+     * @return SimpleMatrix (mainly for testing purposes)
+     * @throws IOException
+     */
     public SimpleMatrix run() throws IOException {
         long totalStartTime = System.currentTimeMillis();
         Random rnd = new Random();
@@ -32,6 +37,15 @@ public class Multiplier {
         return result;
     }
 
+    /**
+     * Multiplies a matrix with a vector.
+     * Matrix and vector need to match so that
+     * matrix.getNumRows() == vector.getNumCols()
+     *
+     * @param matrix input matrix of any size
+     * @param vector input vector.
+     * @return SimpleMatrix
+     */
     public SimpleMatrix multiplyMatrixWithVector(FMatrix matrix, FMatrix vector) {
         SimpleMatrix res = new SimpleMatrix(matrix.getNumRows(), 1, MatrixType.FDRM);
         for (int i = 0; i < matrix.getNumRows(); i++) {
@@ -47,6 +61,11 @@ public class Multiplier {
         return res;
     }
 
+    /**
+     * Multiplies three matrices, of which the last one is a vector.
+     * @param matrices SimpleMatrix[]
+     * @return SimpleMatrix
+     */
     public SimpleMatrix multiplyMatrices(SimpleMatrix[] matrices){
         System.out.println("Multiplying matrices...");
         long startTime = System.currentTimeMillis();
@@ -61,6 +80,12 @@ public class Multiplier {
 
         return result;
     }
+
+    /**
+     * Creates 3 matrices filled with random floats between 0 and 1.
+     * @param rnd Java.Random instance
+     * @return SimpleMatrix[] containing three created matrices.
+     */
     public SimpleMatrix[] createMatrices(Random rnd) {
         long startTime = System.currentTimeMillis();
         SimpleMatrix first = SimpleMatrix.random_FDRM(dimension, dimension / 1000, 0, 1, rnd);
