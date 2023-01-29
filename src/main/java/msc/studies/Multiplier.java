@@ -11,7 +11,11 @@ public class Multiplier {
 
     private int dimension = 1000000;
     private static final String filename = "result.csv";
-    private final Plotter plotter;
+    private Plotter plotter;
+
+    public Multiplier(Plotter plotter) {
+        this.plotter = plotter;
+    }
 
     public Multiplier() {
         this.plotter = new Plotter();
@@ -50,8 +54,8 @@ public class Multiplier {
      * @param vector input vector.
      * @return SimpleMatrix
      */
-    public SimpleMatrix multiplyMatrixWithVector(FMatrix matrix, FMatrix vector) {
-        SimpleMatrix res = new SimpleMatrix(matrix.getNumRows(), 1, MatrixType.FDRM);
+    public SimpleMatrix multiplyMatrixWithVector(FMatrix matrix, FMatrix vector, boolean isFinal) {
+        SimpleMatrix res = new SimpleMatrix(matrix.getNumRows(), 1, isFinal ? MatrixType.DDRM : MatrixType.FDRM);
         for (int i = 0; i < matrix.getNumRows(); i++) {
             for (int j = 0; j < matrix.getNumCols(); j++) {
                 float matrixValue = matrix.get(i, j);
@@ -77,8 +81,8 @@ public class Multiplier {
         FMatrix b = matrices[1].getMatrix();
         FMatrix c = matrices[2].getMatrix();
 
-        SimpleMatrix intermediate = multiplyMatrixWithVector(b, c);
-        SimpleMatrix result = multiplyMatrixWithVector(a, intermediate.getMatrix());
+        SimpleMatrix intermediate = multiplyMatrixWithVector(b, c, false);
+        SimpleMatrix result = multiplyMatrixWithVector(a, intermediate.getMatrix(), true);
         long endTime = System.currentTimeMillis();
         System.out.printf("Multiplied matrix calculated in %d milliseconds\n", (endTime - startTime));
 
@@ -95,15 +99,13 @@ public class Multiplier {
         SimpleMatrix first = SimpleMatrix.random_FDRM(dimension, dimension / 1000, 0, 1, rnd);
         long firstCreatedTime = System.currentTimeMillis();
         System.out.printf("First matrix created in %d milliseconds\n", (firstCreatedTime - startTime));
-
         if (plot) {
             try {
-                this.plotter.plot(first.getMatrix());
+                this.plotter.plotMatrix(first.getMatrix());
             } catch (Exception e) {
                 System.err.println("Error in plotting Matrix: " + e.getMessage());
             }
         }
-
         SimpleMatrix second = SimpleMatrix.random_FDRM(dimension / 1000, dimension, 0, 1, rnd);
         long secondCreatedTime = System.currentTimeMillis();
         System.out.printf("Second matrix created in %d milliseconds\n", (secondCreatedTime - firstCreatedTime));

@@ -4,24 +4,25 @@ import java.io.IOException;
 
 public class Main {
     public static void main(String[] args) {
-printMemoryUsage();
+        Plotter plotter = new Plotter();
         try {
-            Multiplier sm = new Multiplier();
+            new Thread(() -> {
+                runPlotter(plotter);
+            }).start();
+            Multiplier sm = new Multiplier(plotter);
             sm.run();
-        } catch (IOException exception) {
-            System.err.println("ERROR" + exception.getMessage());
+            plotter.setRunning(false);
+        } catch (Exception exception) {
+            System.err.println("ERROR" + exception.getClass() + " " + exception.getMessage());
+            plotter.setRunning(false);
         }
-        printMemoryUsage();
     }
 
-    public static void printMemoryUsage() {
-        int MB = 1048576;
-
-        Runtime rt = Runtime.getRuntime();
-        System.out.println("\nJVM Heap stats in MB");
-        System.out.printf("Total: %d\n", (rt.totalMemory() / MB));
-        System.out.printf("Free: %d\n", (rt.freeMemory() / MB));
-        System.out.printf("Used: %d\n", (rt.totalMemory() - rt.freeMemory()) / MB);
-        System.out.printf("Max: %d\n\n", (rt.maxMemory() / MB));
+    private static void runPlotter(Plotter plotter) {
+        try {
+            plotter.saveMemoryAndCpuUsage();
+        } catch (Exception e) {
+            System.err.println("ERROR" + e.getClass() + " " + e.getMessage());
+        }
     }
 }
