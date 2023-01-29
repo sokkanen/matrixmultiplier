@@ -20,6 +20,11 @@
             <version>0.41</version>
         </dependency>
         <dependency>
+            <groupId>com.github.sh0nk</groupId>
+            <artifactId>matplotlib4j</artifactId>
+            <version>0.5.0</version>
+        </dependency>
+        <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-engine</artifactId>
             <version>5.9.2</version>
