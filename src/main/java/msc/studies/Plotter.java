@@ -36,6 +36,12 @@ public class Plotter {
         this.running = running;
     }
 
+    /**
+     * Used for plotting values of matrix A.
+     * @param mtrx matrix to plot of.
+     * @throws IOException
+     * @throws PythonExecutionException
+     */
     public void plotMatrix(FMatrix mtrx) throws IOException, PythonExecutionException {
         List<Float> x = new ArrayList<>();
         List<Double> y;
@@ -58,6 +64,11 @@ public class Plotter {
         plt.show();
     }
 
+    /**
+     * Draws plot of the memory usage.
+     * @throws IOException
+     * @throws PythonExecutionException
+     */
     public void plotMemory() throws IOException, PythonExecutionException {
         Plot plt = Plot.create();
         plt.plot().add(this.usedMemory).color("blue").label("Used memory sed in MB");
@@ -68,6 +79,11 @@ public class Plotter {
         plt.show();
     }
 
+    /**
+     * Draws plot of the CPU utilization.
+     * @throws IOException
+     * @throws PythonExecutionException
+     */
     public void plotCPU() throws IOException, PythonExecutionException{
         Plot plt = Plot.create();
         plt.plot().add(this.cpuUtilization).color("red").label("CPU Utlization");
@@ -76,8 +92,15 @@ public class Plotter {
         plt.show();
     }
 
+    /**
+     * Saves memory and CPU statistics in 100ms intervals.
+     * Runs as long as Object instance's running variable is true.
+     * @throws IOException
+     * @throws PythonExecutionException
+     * @throws InterruptedException
+     */
     public void saveMemoryAndCpuUsage() throws IOException, PythonExecutionException, InterruptedException{
-        while(running) {
+        while(this.running) {
             this.cpuUtilization.add(osBean.getSystemLoadAverage());
             this.usedMemory.add((rt.totalMemory() - rt.freeMemory()) / MB);
             this.totalMemory.add(rt.totalMemory() / MB);

@@ -52,6 +52,7 @@ public class Multiplier {
      *
      * @param matrix input matrix of any size
      * @param vector input vector.
+     * @param isFinal dictates whether to create a DDRM or a FDRM type of matrix.
      * @return SimpleMatrix
      */
     public SimpleMatrix multiplyMatrixWithVector(FMatrix matrix, FMatrix vector, boolean isFinal) {
